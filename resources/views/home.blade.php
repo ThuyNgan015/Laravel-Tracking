@@ -1,9 +1,5 @@
-<h1 style="text-align: center;">Học lập trình Laravel tại PNV</h1>
-<?php 
-if (env('Y-m-d H:i:s')=='production'){
-    //Call api live
-    echo 'Call api live';
-}else{
-    //Call api sandbox
-    echo 'Call api sandbox';
-}
+<h1 style="text-align: center;"> Hoc lap trinh laravel</h1>
+<?php
+echo date('Y-m-d H:i:s');
+echo config('app.env');
+?>
