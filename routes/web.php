@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/unicode', function(){
+Route::get('/unicode', function () {
     return view('home');
 });
 
-Route::get('/san-pham', function(){
+Route::get('/sanpham', function () {
     return view('product');
 });
