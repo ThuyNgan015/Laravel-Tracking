@@ -3,82 +3,60 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
+use Illuminate\Support\Facades\DB;  
 
-class PhotoController extends Controller
+class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
-    }
+    //    $allPosts = Post::all();
+        // $post = Post::find('c1');
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        // $post = new Post();
+        // $post->title = 'Bai viet 3';
+        // $post->content = 'Noi dung bai viet 3';
+        // $post->status = 1;
+        // $post->save();
+        // dd($post);
+        echo '<h2>Query Eloqent Model';
+        // $allPosts = Post::all();
+        // if($allPosts->count() > 0){
+        //     foreach($allPosts as $post){
+        //         echo '<p>Title: '.$post->title.'</p>';
+        //         echo '<p>Content: '.$post->content.'</p>';
+        //         echo '<p>Status: '.$post->status.'</p>';
+        //         echo '<hr>';
+        //     }
+        // }
+        // $detail = Post::find(2);
+        // dd($detail);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // $activePosts = DB::table('posts')->where('status', 1)->get();
+        // $activePosts = Post::where('status', 1)->get();
+        // dd($activePosts);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        // $allPosts = Post::all();
+        // $activePosts=$allPosts->reject(function ($value, $key) {
+        //     return $value->status == 0;
+        // });
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        // Post::chunk(2,function($Post){
+        //     foreach($posts as $post){
+        //         echo '<p>Title: '.$post->title.'</p>';
+        //         echo '<p>Content: '.$post->content.'</p>';
+        //         echo '<p>Status: '.$post->status.'</p>';
+        //         echo '<hr>';
+        //     }
+        // } )
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        $allPosts = Post::where('status',1)->cursor();
+        foreach($allPosts as $post){
+            echo '<p>Title: '.$post->title.'</p>';
+            echo '<p>Content: '.$post->content.'</p>';
+            echo '<p>Status: '.$post->status.'</p>';
+            echo '<hr>';
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
