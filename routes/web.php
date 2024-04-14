@@ -74,6 +74,4 @@ Route::get('download-image/{link}',[HomeController::class, 'downloadImg'])->name
 
 Route::get('/xin-chao',[UserController::class,'xinchao']);
 
-Route::resource('photos', PhotoController::class);
-
 Route::resource('my', MyController::class);
