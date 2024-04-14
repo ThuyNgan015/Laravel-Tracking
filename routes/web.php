@@ -1,52 +1,82 @@
 <?php
 
-use App\Http\Controllers\Admin\ProductsController;
-use App\Http\Controllers\CategoriesController;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 use Illuminate\Http\Request;
-// Have to must use namespace ở đầu
-use App\Http\Controllers\Admin\DashboardConntroller;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MyOontroller;
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MyController;
+use Illuminate\Http\Response;
+use Illuminate\Mail\Mailables\Content;
+use PhpParser\Node\Stmt\Return_;
 
-use App\Http\Controllers\Controller;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
+// client route
+// Route::get('/', [HomeController::class,'index'])->name('home');
+// Route::prefix('category')->group(function () {
+//     // Danh sách chuyên mục
+//     Route::get('/', [CategoryController::class, 'index'])->name('category.list');
+
+//     Route::get('/edit/{id}', [CategoryController::class, 'getCategory'])->name('category.edit');;
+
+//     Route::post('', [CategoryController::class, 'updateCategory']);
+
+//     Route::get('/add', [CategoryController::class, 'addCategory'])->name('category.add');
+
+//     Route::post('/add', [CategoryController::class, 'showCategory']);
+
+//     Route::delete('/delete/{id}', [CategoryController::class, 'deleteCategory']);
+
+//     Route::post("/upload", [CategoryController::class, 'Handlefile'])->name('category.file');
+//     Route::get("/upload", [CategoryController::class, 'getFile']);
+// });
+
+// Route::middleware('autho.admin')->prefix('admin')->group(function () {
+//     Route::get('/', [DashboardController::class, 'index']);
+//     Route::resource('products', ProductsController::class)->middleware('auth.admin');
+// });
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/sanpham', [HomeController::class, 'products'])->name('product');
+Route::get('/them-san-pham', [HomeController::class, 'getAdd']);
+Route::post('/them-san-pham',[HomeController::class,'postAdd'])->name('post-add');
+Route::put('/them-san-pham', [HomeController::class, 'putAdd']);
 
 
-// Cleint router :: 
-Route::get('/', function(){
-  return '<h1>Trang chủ Laravel</h1>';
-})->name('home');
+Route::get('lay-thong-tin', [HomeController::class, 'getArray']);
+Route::get('/demo-response', function () {
 
-Route::prefix('category')->group(function() {
-  // danh sách chuyên mục
-    Route::get('/',[CategoriesController::class, 'index'])->name('categories.list');
+  return view('client.demo-test');
 
-  Route::get('/edit/{id}', [CategoriesController::class,'getCategory'])->name('categories.edit');
+})->name('demo-response');
+Route::post('demo-response',function(Request $request){
+    if(!empty($request->username)){
 
-  Route::post('/edit/{id}', [CategoriesController::class, 'updateCategory'])->name('categories');
-
-  //Hiển thị form add dữ liệu 
-  Route::get('/add', [CategoriesController::class, 'addCategory'])->name('categories.add');
-
-  Route::post('/add', [CategoriesController::class, 'handleAddcategory']);
-
-  // Xóa chuyên mục
-  Route::delete('/delete/{id}', [CategoriesController::class, 'deleteCategory']);
-
+         return back()->withInput()->with('mess','validate không thành công');
+    };
+     return  redirect(route('demo-response'))->with('mess','validate không thành công');
 });
+Route::get('download-image/{link}',[HomeController::class, 'downloadImg'])->name('downImg');
 
-Route::middleware('auth.admin')->prefix('admin')->group(function(){
- 
-    Route::get('/',[DashboardConntroller::class, 'index'] );
-    Route::middleware('auth.admin.product')->resource('products', ProductsController::class);
- 
+Route::prefix('/users')->name('users.')->group(function(){
+     Route::get('/',[UserController::class,'index'])->name('index');
+     Route::get('/add',[UserController::class,'add'])->name('add');
+     Route::post('/add',[UserController::class,'postAdd'])->name('post-add');
+     Route::get('/edit/{id}',[UserController::class,'getEdit'])->name('edit');
+     Route::post('/update',[UserController::class,'postEdit'])->name('post-edit');
+     Route::get('/delete/{id}',[UserController::class,'delete'])->name('delete');
 });
